@@ -1,22 +1,22 @@
 {
   "manifestVersion": 1,
-  "id": "plugin_template",
-  "name": "Plugin Template",
-  "author": "remnote",
-  "repoUrl": "",
+  "id": "remnote_strudel",
+  "name": "Strudel.cc",
+  "author": "shackra",
+  "repoUrl": "https://github.com/shackra/remnote-strudel",
   "version": {
     "major": 0,
     "minor": 0,
     "patch": 1
   },
   "theme": [],
-  "enableOnMobile": false,
-  "description": "",
+  "enableOnMobile": true,
+  "description": "Embed Strudel.cc live coding patterns in your Rem",
   "requestNative": false,
   "requiredScopes": [
     {
       "type": "All",
-      "level": "Read"
+      "level": "ReadCreateModifyDelete"
     }
   ]
 }

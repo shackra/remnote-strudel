@@ -13,7 +13,14 @@ const CopyPlugin = require('copy-webpack-plugin');
 const isProd = process.env.NODE_ENV === 'production';
 const isDevelopment = !isProd;
 
-const fastRefresh = isDevelopment ? new ReactRefreshWebpackPlugin() : null;
+const fastRefresh = isDevelopment
+  ? new ReactRefreshWebpackPlugin({
+      // Disable the error overlay. Inside RemNote's plugin sandbox the
+      // overlay's error handler intercepts SDK-internal postMessage events
+      // (e.g. "setCustomCSS") and surfaces them as false runtime errors.
+      overlay: false,
+    })
+  : null;
 
 const SANDBOX_SUFFIX = '-sandbox';
 
@@ -96,7 +103,8 @@ const config = {
     new CopyPlugin({
       patterns: [
         { from: 'public', to: '' },
-        { from: 'README.md', to: '' },
+        { from: 'README.md', to: '', noErrorOnMissing: true },
+        { from: 'screenshot.png', to: '', noErrorOnMissing: true },
       ],
     }),
     fastRefresh,
@@ -116,6 +124,12 @@ if (isProd) {
     hot: true,
     compress: true,
     watchFiles: ['src/*'],
+    client: {
+      // Disable the error overlay. It intercepts postMessage events inside
+      // RemNote's plugin sandbox and chokes on SDK-internal events like
+      // "setCustomCSS", causing runtime errors.
+      overlay: false,
+    },
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'baggage, sentry-trace',
